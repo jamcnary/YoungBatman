@@ -21,10 +21,14 @@ namespace YoungBatman
         KeyboardState keyState;
         KeyboardState lastKeyboardState;
         MouseState lastMouseState;
+        Enemy[] Enemies = new Enemy[iTotalMaxEnemies];
 
         int iScore = 0;
         int iGameStarted = 0;
         int iStartButtonState = 0;
+        int iMaxEnemies = 9;
+        int iActiveEnemies = 9;
+        static int iTotalMaxEnemies = 20;
 
         Vector2 v2MousePosition;
         Vector2 v2BatManPosition;
@@ -40,6 +44,7 @@ namespace YoungBatman
         Texture2D t2dStartButton;
         Texture2D t2dStartButtonHover;
         Texture2D t2dStartButtonPressed;
+        Texture2D t2dVillan;
 
         Rectangle rStartButtonBox;
         Rectangle rMouseBox;
@@ -48,6 +53,11 @@ namespace YoungBatman
         {
             iGameStarted = 1;
             iScore = 0;
+        }
+
+        protected void GenerateEnemies()
+        {
+            
         }
 
         public Game1()
@@ -89,9 +99,17 @@ namespace YoungBatman
             t2dStartButton = Content.Load<Texture2D>(@"Textures\start");
             t2dStartButtonHover = Content.Load<Texture2D>(@"Textures\starthover");
             t2dStartButtonPressed = Content.Load<Texture2D>(@"Textures\startpressed");
+            t2dVillan = Content.Load<Texture2D>(@"Textures\batman villans");
 
             rStartButtonBox = new Rectangle((int)v2StartButtonPosition.X + 11, (int)v2StartButtonPosition.Y + 12, 299, 60);
             rMouseBox = new Rectangle((int)v2MousePosition.X, (int)v2MousePosition.Y, 1, 1);
+
+           
+
+            for (int i = 0; i < iTotalMaxEnemies; i++)
+            {
+                Enemies[i] = new Enemy(t2dVillan, 0, 0, i);
+            }
             // TODO: use this.Content to load your game content here
         }
 
