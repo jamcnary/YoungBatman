@@ -1,0 +1,17 @@
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Fonts\Pericles.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\batarang.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\batman villans.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\image001.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\whiteGotham.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\YoungBatman.exe
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\YoungBatman.pdb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\obj\x86\Debug\YoungBatman.csprojResolveAssemblyReference.cache
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\obj\x86\Debug\Microsoft.Xna.Framework.RuntimeProfile.txt
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\obj\x86\Debug\YoungBatman.exe
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\obj\x86\Debug\YoungBatman.pdb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\crosshair.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\hud.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\TitleScreen.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\start.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\starthover.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\startpressed.xnb

@@ -1,0 +1,11 @@
+Content\Fonts\Pericles.xnb
+Content\Textures\batarang.xnb
+Content\Textures\batman villans.xnb
+Content\Textures\image001.xnb
+Content\Textures\whiteGotham.xnb
+Content\Textures\crosshair.xnb
+Content\Textures\hud.xnb
+Content\Textures\TitleScreen.xnb
+Content\Textures\start.xnb
+Content\Textures\starthover.xnb
+Content\Textures\startpressed.xnb
