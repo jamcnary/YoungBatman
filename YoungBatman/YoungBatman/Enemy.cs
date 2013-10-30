@@ -36,13 +36,14 @@ namespace YoungBatman
         public bool IsActive
         {
             get { return bActive; }
+            set { bActive = value; }
         }
 
         public Rectangle BoundingBox
         {
             get
             {
-                return new Rectangle(iX +40, iY + 15, 75, 145);
+                return new Rectangle(iX +40, iY + 15, 75, 145); //Rough guess on collision box
             }
         }
 
@@ -64,7 +65,7 @@ namespace YoungBatman
 
         public void Generate()
         {
-            iApproachSide = rndGen.Next(0, 3);
+            iApproachSide = rndGen.Next(0, 3); // Determin what side enemy spawns, Then place him random point on that side
             if (iApproachSide == 0)
             {
                 iX = rndGen.Next(-400,1680);
@@ -85,31 +86,31 @@ namespace YoungBatman
                 iX = -400;
                 iY = rndGen.Next(-400, 1120);
             }
-            v2motion.X = v2BatManPosition.X - iX;
-            v2motion.Y = v2BatManPosition.Y - iY;
-            fSpeed = (float)(rndGen.Next(3, 6));
+            v2motion.X = (v2BatManPosition.X - iX)/100;  //calculate direction based on batman position
+            v2motion.Y = (v2BatManPosition.Y - iY)/100;
+            fSpeed = (float)(rndGen.Next(1, 1)); // random speed
             bActive = true;
         }
 
         public Enemy(Texture2D texture, int X, int Y, int Frame)
         {
             asSprite = new AnimatedSprite(texture, 0, 0, 175, 178, 20);
+            asSprite.IsAnimating = false;
+            asSprite.Frame = Frame;  //pass the frame from constructor to the animated sprite
         }
 
-
-
-        public void Draw(SpriteBatch sb, int iLocation)
-        {
-            if (bActive)
-                asSprite.Draw(sb, iX, iY, false);
-        }
-
+         
         public void Update(GameTime gametime)
         {
             iX += (int)((float)v2motion.X * fSpeed);
             iY += (int)((float)v2motion.Y * fSpeed);
 
-            asSprite.Update(gametime);
+            //asSprite.Update(gametime); //Since it is not animating, I don't need this.
+        }
+
+        public void Draw(SpriteBatch sb)
+        {
+                asSprite.Draw(sb, iX, iY, false);
         }
     }
 }

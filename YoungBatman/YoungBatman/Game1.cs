@@ -72,7 +72,7 @@ namespace YoungBatman
             // TODO: Add your initialization logic here
             v2MousePosition = Vector2.Zero;
             v2Target = Vector2.Zero;
-
+           
             graphics.PreferredBackBufferHeight = 720;
             graphics.PreferredBackBufferWidth = 1280;
             graphics.ApplyChanges();
@@ -87,6 +87,7 @@ namespace YoungBatman
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            
             v2StartButtonPosition = new Vector2(v2StartButtonPosition.X = 90, v2StartButtonPosition.Y = 400);
             v2BatManPosition = new Vector2(v2BatManPosition.X = 600, v2BatManPosition.Y = 275);
             v2BatarangOrigin = new Vector2(v2BatarangOrigin.X = 610, v2BatarangOrigin.Y = 285);
@@ -108,7 +109,7 @@ namespace YoungBatman
 
             for (int i = 0; i < iTotalMaxEnemies; i++)
             {
-                Enemies[i] = new Enemy(t2dVillan, 0, 0, i);
+                Enemies[i] = new Enemy(t2dVillan, 0, 0, i); // Pass i as the frame number selecting which bad guy on sprite sheet
             }
             // TODO: use this.Content to load your game content here
         }
@@ -133,7 +134,7 @@ namespace YoungBatman
 
             v2MousePosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             v2Target = new Vector2(v2MousePosition.X + (t2dCrosshair.Width / 2), v2MousePosition.Y + (t2dCrosshair.Height / 2));
-            rMouseBox = new Rectangle((int)v2Target.X, (int)v2Target.Y, 1, 1);
+            rMouseBox = new Rectangle((int)v2Target.X, (int)v2Target.Y, 1, 1); // 1 pixel mouse collision box.
 
             if (iGameStarted == 0)
             {
@@ -164,7 +165,17 @@ namespace YoungBatman
 
             if (iGameStarted == 1)
             {
+                if (mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
+                {
+                    Enemies[0].Generate();
 
+                }
+
+                for (int i = 0; i < iTotalMaxEnemies; i++)
+                {
+                    if (Enemies[i].IsActive)
+                        Enemies[i].Update(gameTime);
+                }
 
             }
             // TODO: Add your update logic here
@@ -185,6 +196,13 @@ namespace YoungBatman
             {
                 spriteBatch.Draw(t2dBackground, new Rectangle(0, 0, 1280, 720), Color.White);
                 spriteBatch.Draw(t2dBatman, v2BatManPosition, Color.White);
+
+                for (int i = 0; i < iTotalMaxEnemies; i++)
+                {
+                    if (Enemies[i].IsActive)
+                        Enemies[i].Draw(spriteBatch);
+                }
+
                 spriteBatch.Draw(t2dCrosshair, v2MousePosition, Color.White);
                 spriteBatch.Draw(t2dHud, new Rectangle(0, 0, 1280, 720), Color.White);
             }
