@@ -22,19 +22,23 @@ namespace YoungBatman
         KeyboardState lastKeyboardState;
         MouseState lastMouseState;
         Enemy[] Enemies = new Enemy[iTotalMaxEnemies];
+        
 
         int iScore = 0;
         int iGameStarted = 0;
         int iStartButtonState = 0;
-        int iMaxEnemies = 9;
-        int iActiveEnemies = 9;
+        int iMaxEnemies = 20;
+        int iActiveEnemies = 1;
+        static int iMaxBatarangs = 40;
         static int iTotalMaxEnemies = 20;
 
         Vector2 v2MousePosition;
         Vector2 v2BatManPosition;
+        Vector2 v2BatManCenter;
         Vector2 v2BatarangOrigin;
         Vector2 v2Target;
         Vector2 v2StartButtonPosition;
+        Vector2 v2BatarangDestination;
 
         Texture2D t2dHud;
         Texture2D t2dBackground;
@@ -49,6 +53,11 @@ namespace YoungBatman
         Rectangle rStartButtonBox;
         Rectangle rMouseBox;
 
+        Batarang[] batarangs = new Batarang[iMaxBatarangs];
+
+
+        //static Random rRand = new Random();
+
         protected void StartNewGame()
         {
             iGameStarted = 1;
@@ -58,6 +67,30 @@ namespace YoungBatman
         protected void GenerateEnemies()
         {
             
+        }
+
+        protected void UpdateBatarangs(GameTime gameTime)
+        {
+            // Updates the location of all of thell active player bullets. 
+            for (int x = 0; x < iMaxBatarangs; x++)
+            {
+                if (batarangs[x].IsActive)
+                    batarangs[x].Update(gameTime);
+            }
+        }
+
+        protected void FireBullet(int iVerticalOffset)
+        {
+            // Find and fire a free bullet
+            for (int x = 0; x < iMaxBatarangs; x++)
+            {
+                if (!batarangs[x].IsActive)
+                {
+                    batarangs[x].Fire((int)v2BatarangDestination.X, (int)v2BatarangDestination.Y);
+                    break;
+
+                }
+            }
         }
 
         public Game1()
@@ -88,9 +121,7 @@ namespace YoungBatman
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            v2StartButtonPosition = new Vector2(v2StartButtonPosition.X = 90, v2StartButtonPosition.Y = 400);
-            v2BatManPosition = new Vector2(v2BatManPosition.X = 600, v2BatManPosition.Y = 275);
-            v2BatarangOrigin = new Vector2(v2BatarangOrigin.X = 610, v2BatarangOrigin.Y = 285);
+            
 
             t2dCrosshair = Content.Load<Texture2D>(@"Textures\crosshair");
             t2dBackground = Content.Load<Texture2D>(@"Textures\whiteGotham");
@@ -102,10 +133,18 @@ namespace YoungBatman
             t2dStartButtonPressed = Content.Load<Texture2D>(@"Textures\startpressed");
             t2dVillan = Content.Load<Texture2D>(@"Textures\batman villans");
 
+            v2StartButtonPosition = new Vector2(v2StartButtonPosition.X = 90, v2StartButtonPosition.Y = 400);
+            v2BatManPosition = new Vector2(v2BatManPosition.X = 600, v2BatManPosition.Y = 275);
+            v2BatManCenter = new Vector2(v2BatManPosition.X + (t2dBatman.Width / 2), v2BatManPosition.Y + (t2dBatman.Height / 2));
+            v2BatarangOrigin = new Vector2(v2BatarangOrigin.X = 610, v2BatarangOrigin.Y = 285);
+
             rStartButtonBox = new Rectangle((int)v2StartButtonPosition.X + 11, (int)v2StartButtonPosition.Y + 12, 299, 60);
             rMouseBox = new Rectangle((int)v2MousePosition.X, (int)v2MousePosition.Y, 1, 1);
 
-           
+            
+
+            for (int x = 1; x < iMaxBatarangs; x++)
+                batarangs[x] = new Batarang(Content.Load<Texture2D>(@"Textures\batarang"));
 
             for (int i = 0; i < iTotalMaxEnemies; i++)
             {
@@ -131,7 +170,7 @@ namespace YoungBatman
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-
+            UpdateBatarangs(gameTime);
             v2MousePosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             v2Target = new Vector2(v2MousePosition.X + (t2dCrosshair.Width / 2), v2MousePosition.Y + (t2dCrosshair.Height / 2));
             rMouseBox = new Rectangle((int)v2Target.X, (int)v2Target.Y, 1, 1); // 1 pixel mouse collision box.
@@ -165,6 +204,15 @@ namespace YoungBatman
 
             if (iGameStarted == 1)
             {
+
+
+                UpdateBatarangs(gameTime);
+
+                if ((mouseState.LeftButton == ButtonState.Pressed) && (lastMouseState.LeftButton == ButtonState.Released))
+                {
+                    FireBullet(0);
+                }
+
                 if (mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
                 {
                     Enemies[0].Generate();
@@ -196,6 +244,16 @@ namespace YoungBatman
             {
                 spriteBatch.Draw(t2dBackground, new Rectangle(0, 0, 1280, 720), Color.White);
                 spriteBatch.Draw(t2dBatman, v2BatManPosition, Color.White);
+
+                // Draw any active player bullets on the screen
+                for (int i = 0; i < iMaxBatarangs; i++)
+                {
+                    // Only draw active bullets
+                    if (batarangs[i].IsActive)
+                    {
+                        batarangs[i].Draw(spriteBatch);
+                    }
+                }
 
                 for (int i = 0; i < iTotalMaxEnemies; i++)
                 {
