@@ -10,24 +10,16 @@ namespace YoungBatman
     class Batarang
     {
         static AnimatedSprite asBatarang;
-        int iX;
-        int iY;
-        public int iSpeed = 12;
+        public float fSpeed = 2f;
         bool bActive;
         float fElapsed = 0f;
         float fUpdateInterval = 0.015f;
+        Vector2 v2TargetPosition = new Vector2(0f, 0f);
+        Vector2 v2BatManCenter = new Vector2(600, 315);
+        Vector2 v2BatarangDirection = new Vector2(0f, 0f);
+        Vector2 v2BatarangPosition = new Vector2(0f, 0f);
 
-        public int X
-        {
-            get { return iX; }
-            set { iX = value; }
-        }
-
-        public int Y
-        {
-            get { return iY; }
-            set { iY = value; }
-        }
+        
 
         public bool IsActive
         {
@@ -35,31 +27,36 @@ namespace YoungBatman
             set { bActive = value; }
         }
 
-        public int Speed
+        public float Speed
         {
-            get { return iSpeed; }
-            set { iSpeed = value; }
+            get { return fSpeed; }
+            set { fSpeed = value; }
         }
 
         public Rectangle BoundingBox
         {
-            get { return new Rectangle(iX, iY, 16, 1); }
+            get { return new Rectangle((int)v2BatarangPosition.X, (int)v2BatarangPosition.Y, 16, 1); }
         }
 
         public Batarang(Texture2D texture)
         {
             asBatarang = new AnimatedSprite(texture, 0, 0, 60, 34, 1);
-            iX = 0;
-            iY = 0;
             bActive = false;
         }
 
         
 
-        public void Fire(int X, int Y)
+        public void Fire(float X, float Y)
         {
-            iX = X;
-            iY = Y;
+            v2BatarangPosition.X = v2BatManCenter.X;
+            v2BatarangPosition.Y = v2BatManCenter.Y;
+            v2TargetPosition.X = X;
+            v2TargetPosition.Y = Y;
+
+            v2BatarangDirection.X = (v2TargetPosition.X - v2BatManCenter.X)/100;
+            v2BatarangDirection.Y = (v2TargetPosition.Y - v2BatManCenter.Y)/100;
+
+
             bActive = true;
         }
 
@@ -71,14 +68,16 @@ namespace YoungBatman
                 if (fElapsed > fUpdateInterval)
                 {
                     fElapsed = 0f;
-                    
-                    // If the bullet has moved off of the screen, 
+
+                    v2BatarangPosition.X += (fSpeed * v2BatarangDirection.X);
+                    v2BatarangPosition.Y += (fSpeed * v2BatarangDirection.Y);
+                    // If the batarang has moved off of the screen, 
                     // set it to inactive
-                    if ((iX > 1300) || (iX < -20))
+                    if ((v2BatarangPosition.X > 1300) || (v2BatarangPosition.X < -20))
                     {
                         bActive = false;
                     }
-                    if ((iY > 740) || (iY < -20))
+                    if ((v2BatarangPosition.Y > 740) || (v2BatarangPosition.Y < -20))
                     {
                         bActive = false;
                     }
@@ -93,7 +92,7 @@ namespace YoungBatman
             if (bActive)
             {
                 
-                    asBatarang.Draw(sb, iX, iY, false);
+                    asBatarang.Draw(sb, (int)v2BatarangPosition.X, (int)v2BatarangPosition.Y, false);
                 
             }
         }

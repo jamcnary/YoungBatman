@@ -26,6 +26,7 @@ namespace YoungBatman
         int iCurrentFrame = 0;
         int iScreenX = 0;
         int iScreenY = 0;
+        int iSpinSpeed = 0;
 
         bool bAnimating = true;
 
@@ -49,6 +50,12 @@ namespace YoungBatman
             set { iCurrentFrame = (int)MathHelper.Clamp(value, 0, iFrameCount); }
         }
 
+        public int SpinSpeed
+        {
+            get { return iSpinSpeed; }
+            set { iSpinSpeed = value; }
+        }
+
         public float FrameLength
         {
             get { return fFrameRate; }
@@ -60,6 +67,7 @@ namespace YoungBatman
             get { return bAnimating; }
             set { bAnimating = value; }
         }
+
 
         public AnimatedSprite(Texture2D texture, int FrameOffsetX, int FrameOffsetY, int FrameWidth, int FrameHeight, int FrameCount)
         {
@@ -104,7 +112,7 @@ namespace YoungBatman
             if (NeedBeginEnd)
                 spriteBatch.Begin();
 
-            spriteBatch.Draw(t2dTexture, new Rectangle(iScreenX + XOffset, iScreenY + YOffset, iFrameWidth, iFrameHeight), GetSourceRect(), Color.White);
+            spriteBatch.Draw(t2dTexture, new Rectangle(iScreenX + XOffset, iScreenY + YOffset, iFrameWidth, iFrameHeight), GetSourceRect(),Color.White);
 
             if (NeedBeginEnd)
                 spriteBatch.End();

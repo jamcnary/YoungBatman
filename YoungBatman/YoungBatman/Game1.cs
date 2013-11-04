@@ -79,14 +79,14 @@ namespace YoungBatman
             }
         }
 
-        protected void FireBullet(int iVerticalOffset)
+        protected void FireBullet(Vector2 BatarangDestination)
         {
             // Find and fire a free bullet
             for (int x = 0; x < iMaxBatarangs; x++)
             {
                 if (!batarangs[x].IsActive)
                 {
-                    batarangs[x].Fire((int)v2BatarangDestination.X, (int)v2BatarangDestination.Y);
+                    batarangs[x].Fire(BatarangDestination.X, BatarangDestination.Y);
                     break;
 
                 }
@@ -143,7 +143,7 @@ namespace YoungBatman
 
             
 
-            for (int x = 1; x < iMaxBatarangs; x++)
+            for (int x = 0; x < iMaxBatarangs; x++)
                 batarangs[x] = new Batarang(Content.Load<Texture2D>(@"Textures\batarang"));
 
             for (int i = 0; i < iTotalMaxEnemies; i++)
@@ -170,7 +170,7 @@ namespace YoungBatman
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            UpdateBatarangs(gameTime);
+            
             v2MousePosition = new Vector2(Mouse.GetState().X, Mouse.GetState().Y);
             v2Target = new Vector2(v2MousePosition.X + (t2dCrosshair.Width / 2), v2MousePosition.Y + (t2dCrosshair.Height / 2));
             rMouseBox = new Rectangle((int)v2Target.X, (int)v2Target.Y, 1, 1); // 1 pixel mouse collision box.
@@ -206,11 +206,11 @@ namespace YoungBatman
             {
 
 
-                UpdateBatarangs(gameTime);
 
+                v2BatarangDestination = v2MousePosition;
                 if ((mouseState.LeftButton == ButtonState.Pressed) && (lastMouseState.LeftButton == ButtonState.Released))
                 {
-                    FireBullet(0);
+                    FireBullet(v2BatarangDestination);
                 }
 
                 if (mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
@@ -224,6 +224,7 @@ namespace YoungBatman
                     if (Enemies[i].IsActive)
                         Enemies[i].Update(gameTime);
                 }
+                UpdateBatarangs(gameTime);
 
             }
             // TODO: Add your update logic here
