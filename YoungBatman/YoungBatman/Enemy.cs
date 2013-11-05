@@ -14,25 +14,15 @@ namespace YoungBatman
         AnimatedSprite asSprite;
         Vector2 v2motion = new Vector2(0f, 0f);
         Vector2 v2BatManCenter = new Vector2(633, 351);
-        float fSpeed = 1f;
+        Vector2 v2EnemyPosition;
+        double dEnemyChargeAngle;
+        float fElapsed = 0f;
+        float fUpdateInterval = 0.015f; 
+        float fSpeed = 3f;
         int iFrame;
-        int iX = 0;
-        int iY = 0;
         int iApproachSide = 0;
         bool bActive = false;
         static Random rndGen = new Random();
-
-        public int X
-        {
-            get { return iX; }
-            set { iX = value; }
-        }
-
-        public int Y
-        {
-            get { return iY; }
-            set { iY = value; }
-        }
 
         public bool IsActive
         {
@@ -44,7 +34,7 @@ namespace YoungBatman
         {
             get
             {
-                return new Rectangle(iX +40, iY + 15, 75, 145); //Rough guess on collision box
+                return new Rectangle((int)v2EnemyPosition.X + 40, (int)v2EnemyPosition.Y + 15, 75, 145); //Rough guess on collision box
             }
         }
 
@@ -64,6 +54,12 @@ namespace YoungBatman
             set { v2motion = value; }
         }
 
+        public Vector2 EnemyPosition
+        {
+            get { return v2EnemyPosition; }
+            set { v2EnemyPosition = value; }
+        }
+
         public void Deactivate()
         {
             bActive = false;
@@ -75,27 +71,29 @@ namespace YoungBatman
             iFrame = rndGen.Next(20);
             if (iApproachSide == 1)
             {
-                iX = rndGen.Next(-200,1480);
-                iY = -400;
+                v2EnemyPosition.X = rndGen.Next(-200,1480);
+                v2EnemyPosition.Y = -400;
             }
             if (iApproachSide == 2)
             {
-                iX = 1680;
-                iY = rndGen.Next(-400,1120);
+                v2EnemyPosition.X = 1680;
+                v2EnemyPosition.Y = rndGen.Next(-400, 1120);
             }
             if (iApproachSide == 3)
             {
-                iX = rndGen.Next(-400, 1680);
-                iY = 1120;
+                v2EnemyPosition.X = rndGen.Next(-400, 1680);
+                v2EnemyPosition.Y = 1120;
             }
             if (iApproachSide == 4)
             {
-                iX = -400;
-                iY = rndGen.Next(-400, 1120);
+                v2EnemyPosition.X = -400;
+                v2EnemyPosition.Y = rndGen.Next(-400, 1120);
             }
-            v2motion.X = (v2BatManCenter.X - (iX + 89))/100;  //calculate direction based on batman position
-            v2motion.Y = (v2BatManCenter.Y - (iY + 80))/100;
-            fSpeed = ((float)(rndGen.Next(50, 75)) /100); // random speed
+            dEnemyChargeAngle = Math.Atan2((v2EnemyPosition.Y + 80) - v2BatManCenter.Y, (v2EnemyPosition.X + 89) - v2BatManCenter.X);
+            v2motion = new Vector2((float)Math.Cos(dEnemyChargeAngle), (float)Math.Sin(dEnemyChargeAngle));
+            v2motion.Normalize();
+            
+            fSpeed = ((float)(rndGen.Next(1, 10)) ); // random speed
             bActive = true;
         }
 
@@ -108,17 +106,23 @@ namespace YoungBatman
         }
 
          
-        public void Update(GameTime gametime)
+        public void Update(GameTime gameTime)
         {
-            iX += (int)((float)v2motion.X * fSpeed);
-            iY += (int)((float)v2motion.Y * fSpeed);
-            asSprite.Frame = iFrame;
-            //asSprite.Update(gametime); //Since it is not animating, I don't need this.
+
+            fElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
+            if (fElapsed > fUpdateInterval)
+            {
+                fElapsed = 0f;
+                v2EnemyPosition.X += (fSpeed * v2motion.X);
+                v2EnemyPosition.Y += (fSpeed * v2motion.Y);
+                asSprite.Frame = iFrame;
+                //asSprite.Update(gametime); //Since it is not animating, I don't need this.
+            }
         }
 
         public void Draw(SpriteBatch sb)
         {
-                asSprite.Draw(sb, iX, iY, false);
+            asSprite.Draw(sb, (int)v2EnemyPosition.X, (int)v2EnemyPosition.Y, false);
         }
     }
 }

@@ -10,8 +10,9 @@ namespace YoungBatman
     class Batarang
     {
         static AnimatedSprite asBatarang;
-        public float fSpeed = 2f;
+        public float fSpeed = 7f;
         bool bActive;
+        double dFireAngle;
         float fElapsed = 0f;
         float fUpdateInterval = 0.015f;
         Vector2 v2TargetPosition = new Vector2(0f, 0f);
@@ -53,10 +54,12 @@ namespace YoungBatman
             v2TargetPosition.X = X;
             v2TargetPosition.Y = Y;
 
-            v2BatarangDirection.X = (v2TargetPosition.X - v2BatManCenter.X)/100;
-            v2BatarangDirection.Y = (v2TargetPosition.Y - v2BatManCenter.Y)/100;
+            //v2BatarangDirection.X = (v2TargetPosition.X - v2BatManCenter.X)/100;
+            //v2BatarangDirection.Y = (v2TargetPosition.Y - v2BatManCenter.Y)/100;
+            dFireAngle = Math.Atan2(v2TargetPosition.Y - v2BatManCenter.Y, v2TargetPosition.X - v2BatManCenter.X);
 
-
+            v2BatarangDirection = new Vector2((float)Math.Cos(dFireAngle), (float)Math.Sin(dFireAngle));
+            v2BatarangDirection.Normalize();
             bActive = true;
         }
 
