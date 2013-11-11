@@ -18,7 +18,7 @@ namespace YoungBatman
         double dEnemyChargeAngle;
         float fElapsed = 0f;
         float fUpdateInterval = 0.015f; 
-        float fSpeed = 3f;
+        float fSpeed = .1f;
         int iFrame;
         int iApproachSide = 0;
         bool bActive = false;
@@ -67,7 +67,7 @@ namespace YoungBatman
 
         public void Generate()
         {
-            iApproachSide = rndGen.Next(1, 4); // Determin what side enemy spawns, Then place him random point on that side
+            iApproachSide = rndGen.Next(1, 5); // Determine what side enemy spawns, Then place him random point on that side
             iFrame = rndGen.Next(20);
             if (iApproachSide == 1)
             {
@@ -84,16 +84,16 @@ namespace YoungBatman
                 v2EnemyPosition.X = rndGen.Next(-400, 1680);
                 v2EnemyPosition.Y = 1120;
             }
-            if (iApproachSide == 4)
+            if (iApproachSide == 4 || iApproachSide == 5)
             {
                 v2EnemyPosition.X = -400;
-                v2EnemyPosition.Y = rndGen.Next(-400, 1120);
+                v2EnemyPosition.Y = rndGen.Next(0, 720);
             }
-            dEnemyChargeAngle = Math.Atan2((v2EnemyPosition.Y + 80) - v2BatManCenter.Y, (v2EnemyPosition.X + 89) - v2BatManCenter.X);
+            dEnemyChargeAngle = Math.Atan2((v2BatManCenter.Y) - (v2EnemyPosition.Y + 89), (v2BatManCenter.X) - (v2EnemyPosition.X + 80));
             v2motion = new Vector2((float)Math.Cos(dEnemyChargeAngle), (float)Math.Sin(dEnemyChargeAngle));
             v2motion.Normalize();
             
-            fSpeed = ((float)(rndGen.Next(1, 10)) ); // random speed
+            fSpeed = ((float)(rndGen.Next(9, 10)) ); // random speed
             bActive = true;
         }
 

@@ -18,7 +18,7 @@ namespace YoungBatman
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        KeyboardState keyState;
+        //KeyboardState keyState;
         KeyboardState lastKeyboardState;
         MouseState lastMouseState;
         Enemy[] Enemies = new Enemy[iTotalMaxEnemies];
@@ -28,9 +28,15 @@ namespace YoungBatman
         int iGameStarted = 0;
         int iStartButtonState = 0;
         int iMaxEnemies = 20;
-        int iActiveEnemies = 1;
+        int iActiveEnemies = 0;
+        int iEnemiesPerWave = 1;
+        int iEnemyWaveCount = 0;
         static int iMaxBatarangs = 40;
         static int iTotalMaxEnemies = 20;
+
+        float fTimeToNewWave = 200f;
+        float fWaveTimeElapsed = 0f;
+        float fWaveTimeIncriment = 10f;
 
         Vector2 v2MousePosition;
         Vector2 v2BatManPosition;
@@ -58,15 +64,37 @@ namespace YoungBatman
 
         //static Random rRand = new Random();
 
+        #region Helper Functions
+
+
         protected void StartNewGame()
         {
             iGameStarted = 1;
             iScore = 0;
+            iEnemyWaveCount = 0;
+            fTimeToNewWave = 5f;
+            iActiveEnemies = 0;
+            iEnemiesPerWave = 1;
         }
 
         protected void GenerateEnemies()
         {
-            
+            for (int x = 0; x < (iMaxEnemies); x++)
+            {
+                if (!Enemies[x].IsActive)
+                {
+                    Enemies[x].Generate();
+                    iActiveEnemies++;
+                    
+                }
+                if (iActiveEnemies >= iEnemiesPerWave)
+                {
+                    //iEnemiesPerWave++;
+                    break;
+                }
+            }
+
+
         }
 
         protected void UpdateBatarangs(GameTime gameTime)
@@ -92,6 +120,44 @@ namespace YoungBatman
                 }
             }
         }
+
+        protected bool Intersects(Rectangle rectA, Rectangle rectB)
+        {
+            // Returns True if rectA and rectB contain any overlapping points
+            return (rectA.Right > rectB.Left && rectA.Left < rectB.Right &&
+                    rectA.Bottom > rectB.Top && rectA.Top < rectB.Bottom);
+        }
+
+        protected void DestroyEnemy(int iEnemy)
+        {
+            Enemies[iEnemy].Deactivate();
+            iActiveEnemies--;
+        }
+
+        protected void RemoveBullet(int iBatarang)
+        {
+            batarangs[iBatarang].IsActive = false;
+        }
+
+        protected void CheckBatarangCollision()
+        {
+            // Check to see of any of the players bullets have 
+            // impacted any of the enemies.
+            for (int i = 0; i < iMaxBatarangs; i++)
+            {
+                if (batarangs[i].IsActive)
+                    for (int x = 0; x < iTotalMaxEnemies; x++)
+                        if (Enemies[x].IsActive)
+                            if (Intersects(batarangs[i].BoundingBox,
+                                           Enemies[x].BoundingBox))
+                            {
+                                DestroyEnemy(x);
+                                RemoveBullet(i);
+                                iScore++;
+                            }
+            }
+        } 
+        #endregion
 
         public Game1()
         {
@@ -205,17 +271,21 @@ namespace YoungBatman
             if (iGameStarted == 1)
             {
 
-
-
+                CheckBatarangCollision();
                 v2BatarangDestination = v2MousePosition;
+                fWaveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if ((mouseState.LeftButton == ButtonState.Pressed) && (lastMouseState.LeftButton == ButtonState.Released))
                 {
                     FireBullet(v2BatarangDestination);
                 }
 
-                if (mouseState.LeftButton == ButtonState.Released && lastMouseState.LeftButton == ButtonState.Pressed)
+                if (fWaveTimeElapsed >= fTimeToNewWave)
                 {
-                    Enemies[0].Generate();
+                    fWaveTimeElapsed = 0f;
+                    iEnemyWaveCount++;
+                    GenerateEnemies();
+                    fTimeToNewWave -= fWaveTimeIncriment;
+
 
                 }
 
