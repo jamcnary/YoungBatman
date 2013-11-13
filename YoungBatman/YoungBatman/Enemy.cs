@@ -18,7 +18,9 @@ namespace YoungBatman
         double dEnemyChargeAngle;
         float fElapsed = 0f;
         float fUpdateInterval = 0.015f; 
-        float fSpeed = .1f;
+        float fSpeed = 0f;
+        int iMaxSpeed = 4;
+        int iMinSpeed = 2;
         int iFrame;
         int iApproachSide = 0;
         bool bActive = false;
@@ -41,6 +43,18 @@ namespace YoungBatman
         public float Speed
         {
             get { return fSpeed; }
+        }
+
+        public int MaxSpeed
+        {
+            get { return iMaxSpeed; }
+            set { iMaxSpeed = value; }
+        }
+
+        public int MinSpeed
+        {
+            get { return iMinSpeed; }
+            set { iMinSpeed = value; }
         }
         public int Frame
         {
@@ -93,7 +107,7 @@ namespace YoungBatman
             v2motion = new Vector2((float)Math.Cos(dEnemyChargeAngle), (float)Math.Sin(dEnemyChargeAngle));
             v2motion.Normalize();
             
-            fSpeed = ((float)(rndGen.Next(9, 10)) ); // random speed
+            fSpeed = ((float)(rndGen.Next(iMinSpeed, iMaxSpeed)) ); // random speed
             bActive = true;
         }
 

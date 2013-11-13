@@ -10,7 +10,7 @@ namespace YoungBatman
     class Batarang
     {
         static AnimatedSprite asBatarang;
-        public float fSpeed = 7f;
+        public float fSpeed = 9f;
         bool bActive;
         double dFireAngle;
         float fElapsed = 0f;

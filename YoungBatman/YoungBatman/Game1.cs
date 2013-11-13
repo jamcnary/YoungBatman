@@ -34,9 +34,9 @@ namespace YoungBatman
         static int iMaxBatarangs = 40;
         static int iTotalMaxEnemies = 20;
 
-        float fTimeToNewWave = 200f;
+        float fTimeToNewWave = 1f;
         float fWaveTimeElapsed = 0f;
-        float fWaveTimeIncriment = 10f;
+        float fWaveTimeIncriment = .5f;
 
         Vector2 v2MousePosition;
         Vector2 v2BatManPosition;
@@ -87,9 +87,8 @@ namespace YoungBatman
                     iActiveEnemies++;
                     
                 }
-                if (iActiveEnemies >= iEnemiesPerWave)
+                if (iActiveEnemies > iEnemiesPerWave)
                 {
-                    //iEnemiesPerWave++;
                     break;
                 }
             }
@@ -279,13 +278,15 @@ namespace YoungBatman
                     FireBullet(v2BatarangDestination);
                 }
 
-                if (fWaveTimeElapsed >= fTimeToNewWave)
+                if (fWaveTimeElapsed >= fTimeToNewWave)  
                 {
                     fWaveTimeElapsed = 0f;
                     iEnemyWaveCount++;
                     GenerateEnemies();
-                    fTimeToNewWave -= fWaveTimeIncriment;
-
+                    iEnemiesPerWave++;
+                    //fTimeToNewWave -= fWaveTimeIncriment;
+                    if (fTimeToNewWave <= 0)
+                        fTimeToNewWave = 0;
 
                 }
 
