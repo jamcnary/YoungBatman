@@ -209,7 +209,7 @@ namespace YoungBatman
             
 
             for (int x = 0; x < iMaxBatarangs; x++)
-                batarangs[x] = new Batarang(Content.Load<Texture2D>(@"Textures\batarang"));
+                batarangs[x] = new Batarang(Content.Load<Texture2D>(@"Textures\batarang"),x);
 
             for (int i = 0; i < iTotalMaxEnemies; i++)
             {

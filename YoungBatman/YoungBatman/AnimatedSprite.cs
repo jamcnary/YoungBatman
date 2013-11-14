@@ -16,6 +16,10 @@ namespace YoungBatman
 
         float fFrameRate = 0.02f;
         float fElapsed = 0.0f;
+        float fElapsedRotationTime = 0f;
+        float fRotationAngle = 0f;
+
+        private Vector2 v2Origin;
 
         int iFrameOffsetX = 0;
         int iFrameOffsetY = 0;
@@ -29,7 +33,7 @@ namespace YoungBatman
         int iSpinSpeed = 0;
 
         bool bAnimating = true;
-
+        bool bRotating = false;
 
 
         public int X
@@ -68,6 +72,12 @@ namespace YoungBatman
             set { bAnimating = value; }
         }
 
+        public bool IsRotating
+        {
+            get { return bRotating; }
+            set { bRotating = value; }
+        }
+
 
         public AnimatedSprite(Texture2D texture, int FrameOffsetX, int FrameOffsetY, int FrameWidth, int FrameHeight, int FrameCount)
         {
@@ -77,6 +87,7 @@ namespace YoungBatman
             iFrameWidth = FrameWidth;
             iFrameHeight = FrameHeight;
             iFrameCount = FrameCount;
+            v2Origin = new Vector2((texture.Width /2), (texture.Height /2));
         }
 
         public Rectangle GetSourceRect()
@@ -105,6 +116,14 @@ namespace YoungBatman
                     fElapsed = 0.0f;
                 }
             }
+
+            if (bRotating)
+            {
+                fElapsedRotationTime = (float)gametime.ElapsedGameTime.TotalSeconds;
+                fRotationAngle += fElapsedRotationTime;
+                float fcircle = MathHelper.Pi * 2;
+                fRotationAngle = fRotationAngle % fcircle;
+            }
         }
 
         public void Draw(SpriteBatch spriteBatch, int XOffset, int YOffset, bool NeedBeginEnd)
@@ -120,7 +139,14 @@ namespace YoungBatman
 
         public void Draw(SpriteBatch spriteBatch, int XOffset, int YOffset)
         {
-            Draw(spriteBatch, XOffset, YOffset, true);
+            if(!bRotating)
+                Draw(spriteBatch, XOffset, YOffset, true);
+
+            if (bRotating)
+            {
+                spriteBatch.Draw(t2dTexture, new Vector2(XOffset,YOffset), null, Color.White, fRotationAngle, v2Origin, 1.0f, SpriteEffects.None, 0f);
+
+            }
         }
 
 

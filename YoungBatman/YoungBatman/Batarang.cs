@@ -39,10 +39,12 @@ namespace YoungBatman
             get { return new Rectangle((int)v2BatarangPosition.X, (int)v2BatarangPosition.Y, 16, 1); }
         }
 
-        public Batarang(Texture2D texture)
+        public Batarang(Texture2D texture,int iID)  //pass batarang ID to Animated Sprite
         {
+            string sID = iID.ToString();  //trying to incorperate ID into name of sprite
             asBatarang = new AnimatedSprite(texture, 0, 0, 60, 34, 1);
             bActive = false;
+            asBatarang.IsRotating = true;
         }
 
         
@@ -95,7 +97,7 @@ namespace YoungBatman
             if (bActive)
             {
                 
-                    asBatarang.Draw(sb, (int)v2BatarangPosition.X, (int)v2BatarangPosition.Y, false);
+                    asBatarang.Draw(sb, (int)v2BatarangPosition.X, (int)v2BatarangPosition.Y);
                 
             }
         }
