@@ -22,9 +22,11 @@ namespace YoungBatman
         KeyboardState lastKeyboardState;
         MouseState lastMouseState;
         Enemy[] Enemies = new Enemy[iTotalMaxEnemies];
+        SpriteFont spriteFont;
         
 
         int iScore = 0;
+        int iHighScore = 0;
         int iGameStarted = 0;
         int iStartButtonState = 0;
         int iMaxEnemies = 20;
@@ -45,6 +47,9 @@ namespace YoungBatman
         Vector2 v2Target;
         Vector2 v2StartButtonPosition;
         Vector2 v2BatarangDestination;
+        Vector2 vScoreTextLoc = new Vector2(1075, 10);
+        Vector2 vMenuScoreTextLoc = new Vector2(265, 525);
+        Vector2 vMenuHighScoreTextLoc = new Vector2(265, 605);
 
         Texture2D t2dHud;
         Texture2D t2dBackground;
@@ -58,6 +63,7 @@ namespace YoungBatman
 
         Rectangle rStartButtonBox;
         Rectangle rMouseBox;
+        Rectangle rBatmanBoundingBox;
 
         Batarang[] batarangs = new Batarang[iMaxBatarangs];
 
@@ -69,6 +75,12 @@ namespace YoungBatman
 
         protected void StartNewGame()
         {
+            for (int i = 0; i < iTotalMaxEnemies; i++)
+            {
+                Enemies[i].IsActive = false;
+                Enemies[i].EnemyPosition = Vector2.Zero;
+
+            }
             iGameStarted = 1;
             iScore = 0;
             iEnemyWaveCount = 0;
@@ -155,7 +167,25 @@ namespace YoungBatman
                                 iScore++;
                             }
             }
-        } 
+        }
+
+        protected void CheckBatmanCollision()
+        {
+            for (int i = 0; i < iMaxEnemies; i++)
+            {
+                if (Intersects(rBatmanBoundingBox, Enemies[i].BoundingBox))
+                {
+                    if (iScore > iHighScore)
+                    {
+                        iHighScore = iScore;
+                    
+                    }
+                    iGameStarted = 0;
+                }
+
+            }
+
+        }
         #endregion
 
         public Game1()
@@ -185,7 +215,7 @@ namespace YoungBatman
         {
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
-            
+            spriteFont = Content.Load<SpriteFont>(@"Fonts\Pericles");
             
 
             t2dCrosshair = Content.Load<Texture2D>(@"Textures\crosshair");
@@ -205,6 +235,7 @@ namespace YoungBatman
 
             rStartButtonBox = new Rectangle((int)v2StartButtonPosition.X + 11, (int)v2StartButtonPosition.Y + 12, 299, 60);
             rMouseBox = new Rectangle((int)v2MousePosition.X, (int)v2MousePosition.Y, 1, 1);
+            rBatmanBoundingBox = new Rectangle((int)v2BatManPosition.X + (t2dBatman.Width / 2), (int)v2BatManPosition.Y + (t2dBatman.Height / 2), 1, 1);
 
             
 
@@ -271,6 +302,7 @@ namespace YoungBatman
             {
 
                 CheckBatarangCollision();
+                CheckBatmanCollision();
                 v2BatarangDestination = v2MousePosition;
                 fWaveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if ((mouseState.LeftButton == ButtonState.Pressed) && (lastMouseState.LeftButton == ButtonState.Released))
@@ -335,6 +367,7 @@ namespace YoungBatman
 
                 spriteBatch.Draw(t2dCrosshair, v2MousePosition, Color.White);
                 spriteBatch.Draw(t2dHud, new Rectangle(0, 0, 1280, 720), Color.White);
+                spriteBatch.DrawString(spriteFont, iScore.ToString(), vScoreTextLoc, Color.Black);
             }
 
             if (iGameStarted == 0)
@@ -353,7 +386,8 @@ namespace YoungBatman
                 {
                     spriteBatch.Draw(t2dStartButtonPressed, v2StartButtonPosition, Color.White);
                 }
-
+                spriteBatch.DrawString(spriteFont, iScore.ToString(), vMenuScoreTextLoc, Color.White);
+                spriteBatch.DrawString(spriteFont, iHighScore.ToString(), vMenuHighScoreTextLoc, Color.White);
                 spriteBatch.Draw(t2dCrosshair, v2MousePosition, Color.White);
             }
             spriteBatch.End();
