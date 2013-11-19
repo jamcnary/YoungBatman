@@ -89,6 +89,7 @@ namespace YoungBatman
 
 
                 }
+                asBatarang.Update(gameTime);
             }
         }
 

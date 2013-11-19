@@ -120,7 +120,7 @@ namespace YoungBatman
             if (bRotating)
             {
                 fElapsedRotationTime = (float)gametime.ElapsedGameTime.TotalSeconds;
-                fRotationAngle += fElapsedRotationTime;
+                fRotationAngle += (fElapsedRotationTime * 20);
                 float fcircle = MathHelper.Pi * 2;
                 fRotationAngle = fRotationAngle % fcircle;
             }
