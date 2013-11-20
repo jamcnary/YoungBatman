@@ -64,6 +64,10 @@ namespace YoungBatman
         Rectangle rStartButtonBox;
         Rectangle rMouseBox;
         Rectangle rBatmanBoundingBox;
+        SoundEffect seWiff;
+        SoundEffect seThrow;
+        SoundEffect seHit;
+        SoundEffect seLose;
 
         Batarang[] batarangs = new Batarang[iMaxBatarangs];
 
@@ -139,6 +143,7 @@ namespace YoungBatman
                 if (!batarangs[x].IsActive)
                 {
                     batarangs[x].Fire(BatarangDestination.X, BatarangDestination.Y);
+                    seThrow.Play();
                     break;
 
                 }
@@ -177,6 +182,7 @@ namespace YoungBatman
                             {
                                 DestroyEnemy(x);
                                 GeneratePow(batarangs[i].v2BatarangPosition);
+                                seHit.Play();
                                 RemoveBullet(i);
 
                                 iScore++;
@@ -195,6 +201,7 @@ namespace YoungBatman
                         iHighScore = iScore;
                     
                     }
+                    seLose.Play();
                     iGameStarted = 0;
                 }
 
@@ -211,11 +218,13 @@ namespace YoungBatman
                     if ((batarangs[i].X > 1300) || (batarangs[i].X < -20))
                     {
                         batarangs[i].IsActive = false;
+                        seWiff.Play();
                         iScore--;
                     }
                     if ((batarangs[i].Y > 740) || (batarangs[i].Y < -20))
                     {
                         batarangs[i].IsActive = false;
+                        seWiff.Play();
                         iScore--;
                     }
 
@@ -255,7 +264,10 @@ namespace YoungBatman
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = Content.Load<SpriteFont>(@"Fonts\Pericles");
-            
+            seWiff = Content.Load<SoundEffect>(@"Audio\woosh");
+            seThrow = Content.Load<SoundEffect>(@"Audio\thow");
+            seHit = Content.Load<SoundEffect>(@"Audio\punch");
+            seLose = Content.Load<SoundEffect>(@"Audio\sad");
 
             t2dCrosshair = Content.Load<Texture2D>(@"Textures\crosshair");
             t2dBackground = Content.Load<Texture2D>(@"Textures\whiteGotham");

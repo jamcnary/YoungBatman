@@ -107,7 +107,43 @@
       <Processor>TextureProcessor</Processor>
       <Options>None</Options>
       <Output>C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\pow.xnb</Output>
-      <Time>2013-11-19T21:17:45.1947901-06:00</Time>
+      <Time>2013-11-19T21:53:04.4010018-06:00</Time>
+    </Item>
+    <Item>
+      <Source>Audio\punch.mp3</Source>
+      <Name>Audio\punch</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\punch.xnb</Output>
+      <Time>2013-11-19T22:17:58.9480354-06:00</Time>
+    </Item>
+    <Item>
+      <Source>Audio\thow.mp3</Source>
+      <Name>Audio\thow</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\thow.xnb</Output>
+      <Time>2013-11-19T22:10:00.529358-06:00</Time>
+    </Item>
+    <Item>
+      <Source>Audio\woosh.mp3</Source>
+      <Name>Audio\woosh</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\woosh.xnb</Output>
+      <Time>2013-11-19T22:10:00.4923559-06:00</Time>
+    </Item>
+    <Item>
+      <Source>Audio\sad.mp3</Source>
+      <Name>Audio\sad</Name>
+      <Importer>Mp3Importer</Importer>
+      <Processor>SoundEffectProcessor</Processor>
+      <Options>None</Options>
+      <Output>C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\sad.xnb</Output>
+      <Time>2013-11-19T22:55:36.8383807-06:00</Time>
     </Item>
     <BuildSuccessful>true</BuildSuccessful>
     <Settings>

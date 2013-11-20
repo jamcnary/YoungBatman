@@ -16,3 +16,11 @@ C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debu
 C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\starthover.xnb
 C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\startpressed.xnb
 C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\pow.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\punch.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\thow.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\woosh.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Audio\sad.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\YoungBatman.exe.manifest
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\YoungBatman.application
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\obj\x86\Debug\YoungBatman.exe.manifest
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\obj\x86\Debug\YoungBatman.application

@@ -10,3 +10,7 @@ Content\Textures\start.xnb
 Content\Textures\starthover.xnb
 Content\Textures\startpressed.xnb
 Content\Textures\pow.xnb
+Content\Audio\punch.xnb
+Content\Audio\thow.xnb
+Content\Audio\woosh.xnb
+Content\Audio\sad.xnb
