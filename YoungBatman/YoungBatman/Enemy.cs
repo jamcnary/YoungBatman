@@ -24,6 +24,7 @@ namespace YoungBatman
         int iFrame;
         int iApproachSide = 0;
         bool bActive = false;
+        bool bDead = false;
         static Random rndGen = new Random();
 
         public bool IsActive
@@ -76,11 +77,14 @@ namespace YoungBatman
 
         public void Deactivate()
         {
-            bActive = false;
+            v2motion.X *= -15;
+            v2motion.Y *= -15;
+            bDead = true;
         }
 
         public void Generate()
         {
+            bDead = false;
             iApproachSide = rndGen.Next(1, 5); // Determine what side enemy spawns, Then place him random point on that side
             iFrame = rndGen.Next(20);
             if (iApproachSide == 1)
@@ -131,6 +135,17 @@ namespace YoungBatman
                 v2EnemyPosition.Y += (fSpeed * v2motion.Y);
                 asSprite.Frame = iFrame;
                 //asSprite.Update(gametime); //Since it is not animating, I don't need this.
+                if (bDead)
+                {
+                    if ((v2EnemyPosition.X > 1300) || (v2EnemyPosition.X < -20))
+                    {
+                        bActive = false;
+                    }
+                    if ((v2EnemyPosition.Y > 740) || (v2EnemyPosition.Y < -20))
+                    {
+                        bActive = false;
+                    }
+                }
             }
         }
 

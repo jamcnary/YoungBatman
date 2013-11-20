@@ -9,3 +9,4 @@ Content\Textures\TitleScreen.xnb
 Content\Textures\start.xnb
 Content\Textures\starthover.xnb
 Content\Textures\startpressed.xnb
+Content\Textures\pow.xnb

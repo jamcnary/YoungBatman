@@ -18,7 +18,7 @@ namespace YoungBatman
         Vector2 v2TargetPosition = new Vector2(0f, 0f);
         Vector2 v2BatManCenter = new Vector2(600, 315);
         Vector2 v2BatarangDirection = new Vector2(0f, 0f);
-        Vector2 v2BatarangPosition = new Vector2(0f, 0f);
+        public Vector2 v2BatarangPosition = new Vector2(0f, 0f);
 
         
 
@@ -33,15 +33,24 @@ namespace YoungBatman
             get { return fSpeed; }
             set { fSpeed = value; }
         }
+        public int X
+        {
+            get { return (int)v2BatarangPosition.X; }
+            set { v2BatarangPosition.X = value; }
+        }
+        public int Y
+        {
+            get { return (int)v2BatarangPosition.Y; }
+            set { v2BatarangPosition.Y = value; }
+        }
 
         public Rectangle BoundingBox
         {
             get { return new Rectangle((int)v2BatarangPosition.X, (int)v2BatarangPosition.Y, 16, 1); }
         }
 
-        public Batarang(Texture2D texture,int iID)  //pass batarang ID to Animated Sprite
+        public Batarang(Texture2D texture)
         {
-            string sID = iID.ToString();  //trying to incorperate ID into name of sprite
             asBatarang = new AnimatedSprite(texture, 0, 0, 60, 34, 1);
             bActive = false;
             asBatarang.IsRotating = true;
@@ -78,14 +87,14 @@ namespace YoungBatman
                     v2BatarangPosition.Y += (fSpeed * v2BatarangDirection.Y);
                     // If the batarang has moved off of the screen, 
                     // set it to inactive
-                    if ((v2BatarangPosition.X > 1300) || (v2BatarangPosition.X < -20))
-                    {
-                        bActive = false;
-                    }
-                    if ((v2BatarangPosition.Y > 740) || (v2BatarangPosition.Y < -20))
-                    {
-                        bActive = false;
-                    }
+                    //if ((v2BatarangPosition.X > 1300) || (v2BatarangPosition.X < -20))
+                    //{
+                    //    bActive = false;
+                    //}
+                    //if ((v2BatarangPosition.Y > 740) || (v2BatarangPosition.Y < -20))
+                    //{
+                    //    bActive = false;
+                    //}
 
 
                 }

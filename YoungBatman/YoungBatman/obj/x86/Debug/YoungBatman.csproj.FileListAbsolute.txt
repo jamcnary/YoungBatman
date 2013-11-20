@@ -15,3 +15,4 @@ C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debu
 C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\start.xnb
 C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\starthover.xnb
 C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\startpressed.xnb
+C:\Users\James\Documents\GitHub\YoungBatman\YoungBatman\YoungBatman\bin\x86\Debug\Content\Textures\pow.xnb

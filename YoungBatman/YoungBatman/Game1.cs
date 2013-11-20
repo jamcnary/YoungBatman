@@ -22,9 +22,8 @@ namespace YoungBatman
         KeyboardState lastKeyboardState;
         MouseState lastMouseState;
         Enemy[] Enemies = new Enemy[iTotalMaxEnemies];
+        Pow[] Bams = new Pow[iTotalBams];
         SpriteFont spriteFont;
-        
-
         int iScore = 0;
         int iHighScore = 0;
         int iGameStarted = 0;
@@ -34,11 +33,11 @@ namespace YoungBatman
         int iEnemiesPerWave = 1;
         int iEnemyWaveCount = 0;
         static int iMaxBatarangs = 40;
-        static int iTotalMaxEnemies = 20;
+        static int iTotalMaxEnemies = 100;
+        static int iTotalBams = 8;
 
         float fTimeToNewWave = 1f;
         float fWaveTimeElapsed = 0f;
-        float fWaveTimeIncriment = .5f;
 
         Vector2 v2MousePosition;
         Vector2 v2BatManPosition;
@@ -60,6 +59,7 @@ namespace YoungBatman
         Texture2D t2dStartButtonHover;
         Texture2D t2dStartButtonPressed;
         Texture2D t2dVillan;
+        Texture2D t2dPow;
 
         Rectangle rStartButtonBox;
         Rectangle rMouseBox;
@@ -91,7 +91,7 @@ namespace YoungBatman
 
         protected void GenerateEnemies()
         {
-            for (int x = 0; x < (iMaxEnemies); x++)
+            for (int x = 0; x < iMaxEnemies; x++)
             {
                 if (!Enemies[x].IsActive)
                 {
@@ -106,6 +106,19 @@ namespace YoungBatman
             }
 
 
+        }
+        protected void GeneratePow(Vector2 Position)
+        {
+            for (int x = 0; x < iTotalBams; x++)
+            {
+                if (!Bams[x].IsActive)
+                {
+                    Bams[x].Generate(Position);
+                    break;
+                }
+
+            }
+            
         }
 
         protected void UpdateBatarangs(GameTime gameTime)
@@ -163,7 +176,9 @@ namespace YoungBatman
                                            Enemies[x].BoundingBox))
                             {
                                 DestroyEnemy(x);
+                                GeneratePow(batarangs[i].v2BatarangPosition);
                                 RemoveBullet(i);
+
                                 iScore++;
                             }
             }
@@ -186,6 +201,30 @@ namespace YoungBatman
             }
 
         }
+
+        protected void CheckBatarangInbounds()
+        {
+            for (int i = 0; i < iMaxBatarangs; i++)
+            {
+                if (batarangs[i].IsActive)
+                {
+                    if ((batarangs[i].X > 1300) || (batarangs[i].X < -20))
+                    {
+                        batarangs[i].IsActive = false;
+                        iScore--;
+                    }
+                    if ((batarangs[i].Y > 740) || (batarangs[i].Y < -20))
+                    {
+                        batarangs[i].IsActive = false;
+                        iScore--;
+                    }
+
+                }
+
+            }
+        }
+
+
         #endregion
 
         public Game1()
@@ -227,6 +266,7 @@ namespace YoungBatman
             t2dStartButtonHover = Content.Load<Texture2D>(@"Textures\starthover");
             t2dStartButtonPressed = Content.Load<Texture2D>(@"Textures\startpressed");
             t2dVillan = Content.Load<Texture2D>(@"Textures\batman villans");
+            t2dPow = Content.Load<Texture2D>(@"Textures\pow");
 
             v2StartButtonPosition = new Vector2(v2StartButtonPosition.X = 90, v2StartButtonPosition.Y = 400);
             v2BatManPosition = new Vector2(v2BatManPosition.X = 600, v2BatManPosition.Y = 275);
@@ -237,10 +277,11 @@ namespace YoungBatman
             rMouseBox = new Rectangle((int)v2MousePosition.X, (int)v2MousePosition.Y, 1, 1);
             rBatmanBoundingBox = new Rectangle((int)v2BatManPosition.X + (t2dBatman.Width / 2), (int)v2BatManPosition.Y + (t2dBatman.Height / 2), 1, 1);
 
-            
-
             for (int x = 0; x < iMaxBatarangs; x++)
-                batarangs[x] = new Batarang(Content.Load<Texture2D>(@"Textures\batarang"),x);
+                batarangs[x] = new Batarang(Content.Load<Texture2D>(@"Textures\batarang"));
+
+            for (int x = 0; x < iTotalBams; x++)
+                Bams[x] = new Pow(t2dPow);
 
             for (int i = 0; i < iTotalMaxEnemies; i++)
             {
@@ -303,6 +344,9 @@ namespace YoungBatman
 
                 CheckBatarangCollision();
                 CheckBatmanCollision();
+                CheckBatarangInbounds();
+                if (iScore <= 0)
+                    iScore = 0;
                 v2BatarangDestination = v2MousePosition;
                 fWaveTimeElapsed += (float)gameTime.ElapsedGameTime.TotalSeconds;
                 if ((mouseState.LeftButton == ButtonState.Pressed) && (lastMouseState.LeftButton == ButtonState.Released))
@@ -315,7 +359,9 @@ namespace YoungBatman
                     fWaveTimeElapsed = 0f;
                     iEnemyWaveCount++;
                     GenerateEnemies();
-                    iEnemiesPerWave++;
+                    iEnemiesPerWave +=2;
+                    if (iEnemiesPerWave >= 20)
+                        iEnemiesPerWave += 10;
                     //fTimeToNewWave -= fWaveTimeIncriment;
                     if (fTimeToNewWave <= 0)
                         fTimeToNewWave = 0;
@@ -327,7 +373,14 @@ namespace YoungBatman
                     if (Enemies[i].IsActive)
                         Enemies[i].Update(gameTime);
                 }
+                for (int y = 0; y < iTotalBams; y++)
+                {
+                    if (Bams[y].IsActive)
+                        Bams[y].Update(gameTime);
+                }
+                
                 UpdateBatarangs(gameTime);
+
 
             }
             // TODO: Add your update logic here
@@ -363,6 +416,15 @@ namespace YoungBatman
                 {
                     if (Enemies[i].IsActive)
                         Enemies[i].Draw(spriteBatch);
+                }
+
+                for (int i = 0; i < iTotalBams; i++)
+                {
+                    // Only draw active bullets
+                    if (Bams[i].IsActive)
+                    {
+                        Bams[i].Draw(spriteBatch);
+                    }
                 }
 
                 spriteBatch.Draw(t2dCrosshair, v2MousePosition, Color.White);
